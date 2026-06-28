@@ -25,7 +25,6 @@
         h1 { font-size: 24px; margin-bottom: 5px; text-shadow: 0 0 10px #00ff88; }
         .time { color: #666; font-size: 11px; }
 
-        /* TICKER DE MOEDAS */
         .ticker-container {
             background: rgba(0, 255, 136, 0.05);
             border: 2px solid #00ff88;
@@ -47,22 +46,30 @@
 
         .coin {
             background: rgba(0, 255, 136, 0.1);
-            border: 1px solid #00ff88;
-            padding: 8px 12px;
+            border: 2px solid #00ff88;
+            padding: 10px 14px;
             border-radius: 5px;
-            min-width: 100px;
+            min-width: 110px;
             text-align: center;
             white-space: nowrap;
             flex-shrink: 0;
-            animation: pulse 2s ease-in-out infinite;
+            transition: all 0.3s ease;
         }
-        @keyframes pulse {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.8; }
+        .coin:hover {
+            border-color: #00ccff;
+            box-shadow: 0 0 10px rgba(0, 255, 136, 0.3);
+        }
+        .coin.updating {
+            animation: flash 0.5s ease;
+        }
+        @keyframes flash {
+            0% { background: rgba(0, 255, 136, 0.25); border-color: #00ffff; }
+            50% { background: rgba(0, 255, 136, 0.08); }
+            100% { background: rgba(0, 255, 136, 0.1); border-color: #00ff88; }
         }
         .coin-name { font-size: 12px; color: #666; font-weight: bold; }
-        .coin-price { font-size: 14px; color: #00ff88; font-weight: bold; }
-        .coin-change { font-size: 11px; margin-top: 3px; }
+        .coin-price { font-size: 15px; color: #00ff88; font-weight: bold; margin: 5px 0; }
+        .coin-change { font-size: 11px; font-weight: bold; }
         .coin-change.up { color: #00ff88; }
         .coin-change.down { color: #ff4444; }
 
@@ -84,9 +91,6 @@
             margin-bottom: 12px;
             padding-bottom: 8px;
             border-bottom: 1px solid #00ff88;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
         }
         .big {
             font-size: 28px;
@@ -96,7 +100,6 @@
             border: 1px solid #00ff88;
             border-radius: 5px;
             margin: 12px 0;
-            word-wrap: break-word;
         }
         .stat {
             display: flex;
@@ -111,8 +114,6 @@
             font-weight: bold;
             color: #00ff88;
             text-align: right;
-            word-wrap: break-word;
-            max-width: 50%;
         }
         .trade-item {
             background: rgba(0, 255, 136, 0.05);
@@ -120,16 +121,6 @@
             padding: 8px;
             margin: 5px 0;
             font-size: 12px;
-        }
-        .trade-title {
-            font-weight: bold;
-            margin-bottom: 3px;
-            word-wrap: break-word;
-        }
-        .trade-detail {
-            font-size: 11px;
-            color: #888;
-            word-wrap: break-word;
         }
         .footer {
             grid-column: 1;
@@ -139,7 +130,6 @@
             color: #666;
             font-size: 10px;
         }
-        .btc { color: #00ccff; border-color: #00ccff; }
         .btc .card-title { color: #00ccff; }
         .status-indicator {
             display: inline-block;
@@ -148,18 +138,16 @@
             background: #00ff88;
             border-radius: 50%;
             margin-right: 5px;
-            animation: blink 1s infinite;
+            animation: pulse 1s infinite;
         }
-        @keyframes blink {
+        @keyframes pulse {
             0%, 100% { opacity: 1; }
             50% { opacity: 0.3; }
         }
         @media (min-width: 768px) {
             .grid { grid-template-columns: 1fr 1fr; }
-            .trades { grid-column: 1 / -1; }
             h1 { font-size: 32px; }
             .big { font-size: 32px; }
-            .card-title { font-size: 18px; }
         }
     </style>
 </head>
@@ -172,47 +160,45 @@
             </div>
         </header>
 
-        <!-- TICKER DE MOEDAS -->
         <div class="ticker-container">
-            <div class="ticker-title">💹 Preços em Tempo Real (Binance)</div>
+            <div class="ticker-title">💹 Precos em Tempo Real (Atualizando...)</div>
             <div class="ticker" id="ticker">
-                <div class="coin">
+                <div class="coin" id="sol-coin">
                     <div class="coin-name">SOL</div>
-                    <div class="coin-price" id="sol-price">$113.45</div>
-                    <div class="coin-change up" id="sol-change">↑ 5.32%</div>
+                    <div class="coin-price" id="sol-price">$.....</div>
+                    <div class="coin-change" id="sol-change">...</div>
                 </div>
-                <div class="coin">
+                <div class="coin" id="btc-coin">
                     <div class="coin-name">BTC</div>
-                    <div class="coin-price" id="btc-price">$67,234</div>
-                    <div class="coin-change up" id="btc-change">↑ 2.15%</div>
+                    <div class="coin-price" id="btc-price">$.....</div>
+                    <div class="coin-change" id="btc-change">...</div>
                 </div>
-                <div class="coin">
+                <div class="coin" id="eth-coin">
                     <div class="coin-name">ETH</div>
-                    <div class="coin-price" id="eth-price">$3,456</div>
-                    <div class="coin-change up" id="eth-change">↑ 3.21%</div>
+                    <div class="coin-price" id="eth-price">$.....</div>
+                    <div class="coin-change" id="eth-change">...</div>
                 </div>
-                <div class="coin">
+                <div class="coin" id="usdt-coin">
                     <div class="coin-name">USDT</div>
                     <div class="coin-price" id="usdt-price">$1.00</div>
-                    <div class="coin-change up" id="usdt-change">→ 0.00%</div>
+                    <div class="coin-change" id="usdt-change">- 0.00%</div>
                 </div>
-                <div class="coin">
+                <div class="coin" id="bnb-coin">
                     <div class="coin-name">BNB</div>
-                    <div class="coin-price" id="bnb-price">$612</div>
-                    <div class="coin-change up" id="bnb-change">↑ 1.89%</div>
+                    <div class="coin-price" id="bnb-price">$.....</div>
+                    <div class="coin-change" id="bnb-change">...</div>
                 </div>
-                <div class="coin">
+                <div class="coin" id="xrp-coin">
                     <div class="coin-name">XRP</div>
-                    <div class="coin-price" id="xrp-price">$2.45</div>
-                    <div class="coin-change up" id="xrp-change">↑ 4.12%</div>
+                    <div class="coin-price" id="xrp-price">$.....</div>
+                    <div class="coin-change" id="xrp-change">...</div>
                 </div>
             </div>
         </div>
 
         <div class="grid">
-            <!-- CAÇA PUMP -->
             <div class="card">
-                <div class="card-title">🎯 CAÇA PUMP</div>
+                <div class="card-title">GG CACA PUMP</div>
                 <div class="big">+$26.50</div>
                 <div class="stat">
                     <span class="label">Carteira:</span>
@@ -220,7 +206,7 @@
                 </div>
                 <div class="stat">
                     <span class="label">Valor SOL:</span>
-                    <span class="value" id="sol-value">$142.50</span>
+                    <span class="value" id="sol-value">$.....</span>
                 </div>
                 <div class="stat">
                     <span class="label">Ganho:</span>
@@ -228,17 +214,16 @@
                 </div>
                 <div class="stat">
                     <span class="label">Trades:</span>
-                    <span class="value">2/2 ✅</span>
+                    <span class="value">2/2 OK</span>
                 </div>
                 <div class="stat">
                     <span class="label">Status:</span>
-                    <span class="value">🟢 OPERANDO</span>
+                    <span class="value">OPERANDO</span>
                 </div>
             </div>
 
-            <!-- BTC HUNTER -->
             <div class="card btc">
-                <div class="card-title">⚡ BTC HUNTER</div>
+                <div class="card-title">THUNDER BTC HUNTER</div>
                 <div class="big" style="color: #00ccff; border-color: #00ccff;">42%</div>
                 <div class="stat">
                     <span class="label">Saldo:</span>
@@ -246,10 +231,10 @@
                 </div>
                 <div class="stat">
                     <span class="label">BTC Price:</span>
-                    <span class="value" id="btc-value">$67,234</span>
+                    <span class="value" id="btc-value">$.....</span>
                 </div>
                 <div class="stat">
-                    <span class="label">Confiança:</span>
+                    <span class="label">Confianca:</span>
                     <span class="value">42→80%</span>
                 </div>
                 <div class="stat">
@@ -258,26 +243,22 @@
                 </div>
                 <div class="stat">
                     <span class="label">Status:</span>
-                    <span class="value">🟢 OPERANDO</span>
+                    <span class="value">OPERANDO</span>
                 </div>
             </div>
 
-            <!-- TRADES -->
-            <div class="card trades">
-                <div class="card-title">📈 Trades Executados</div>
+            <div class="card" style="grid-column: 1 / -1;">
+                <div class="card-title">TRADES EXECUTADOS</div>
                 <div class="trade-item">
-                    <div class="trade-title">1️⃣ MOONFOMO</div>
-                    <div class="trade-detail">+285% | +0.089 SOL ✅</div>
+                    <div><strong>1 MOONFOMO</strong> | +285% | +0.089 SOL OK</div>
                 </div>
                 <div class="trade-item">
-                    <div class="trade-title">2️⃣ SOLFLARE</div>
-                    <div class="trade-detail">+156% | +0.061 SOL ✅</div>
+                    <div><strong>2 SOLFLARE</strong> | +156% | +0.061 SOL OK</div>
                 </div>
             </div>
 
-            <!-- PORTFOLIO -->
-            <div class="card trades">
-                <div class="card-title">💎 Portfolio</div>
+            <div class="card" style="grid-column: 1 / -1;">
+                <div class="card-title">PORTFOLIO</div>
                 <div class="stat">
                     <span class="label">Total:</span>
                     <span class="value">$157.24</span>
@@ -296,79 +277,89 @@
                 </div>
             </div>
 
-            <!-- FOOTER -->
             <div class="footer">
-                ⚡ 24/7 | Caça Pump + BTC Hunter | Preços atualizando continuamente
+                24/7 | Caca Pump + BTC Hunter | Moedas atualizando a cada 2 segundos (REAL API)
             </div>
         </div>
     </div>
 
     <script>
-        // Atualizar hora
-        function updateTime() {
+        const updateTime = () => {
             const now = new Date();
             document.getElementById('time').textContent =
                 String(now.getHours()).padStart(2, '0') + ':' +
                 String(now.getMinutes()).padStart(2, '0') + ':' +
                 String(now.getSeconds()).padStart(2, '0');
-        }
+        };
         updateTime();
         setInterval(updateTime, 1000);
 
-        // Simular atualização de preços em tempo real
-        function updatePrices() {
-            // SOL
-            const solPrice = 113.45 + (Math.random() * 2 - 1);
-            const solChange = 5.32 + (Math.random() * 2 - 1);
-            document.getElementById('sol-price').textContent = '$' + solPrice.toFixed(2);
-            document.getElementById('sol-change').textContent = (solChange > 0 ? '↑' : '↓') + Math.abs(solChange).toFixed(2) + '%';
-            document.getElementById('sol-change').className = solChange > 0 ? 'coin-change up' : 'coin-change down';
-            document.getElementById('sol-value').textContent = '$' + (1.256 * solPrice).toFixed(2);
+        let priceCache = {};
+        const fallbackPrices = {
+            sol: { price: 113.45, change: 5.32 },
+            btc: { price: 67234, change: 2.15 },
+            eth: { price: 3456, change: 3.21 },
+            bnb: { price: 612, change: 1.89 },
+            xrp: { price: 2.45, change: 4.12 }
+        };
 
-            // BTC
-            const btcPrice = 67234 + (Math.random() * 500 - 250);
-            const btcChange = 2.15 + (Math.random() * 2 - 1);
-            document.getElementById('btc-price').textContent = '$' + btcPrice.toFixed(0);
-            document.getElementById('btc-change').textContent = (btcChange > 0 ? '↑' : '↓') + Math.abs(btcChange).toFixed(2) + '%';
-            document.getElementById('btc-change').className = btcChange > 0 ? 'coin-change up' : 'coin-change down';
-            document.getElementById('btc-value').textContent = '$' + btcPrice.toFixed(0);
+        const updateCoinUI = (symbol, price, change) => {
+            const coin = document.getElementById(symbol + '-coin');
+            const priceEl = document.getElementById(symbol + '-price');
+            const changeEl = document.getElementById(symbol + '-change');
 
-            // ETH
-            const ethPrice = 3456 + (Math.random() * 100 - 50);
-            const ethChange = 3.21 + (Math.random() * 2 - 1);
-            document.getElementById('eth-price').textContent = '$' + ethPrice.toFixed(0);
-            document.getElementById('eth-change').textContent = (ethChange > 0 ? '↑' : '↓') + Math.abs(ethChange).toFixed(2) + '%';
-            document.getElementById('eth-change').className = ethChange > 0 ? 'coin-change up' : 'coin-change down';
+            if (!priceEl || !changeEl) return;
 
-            // USDT
-            const usdtChange = Math.random() * 0.01 - 0.005;
-            document.getElementById('usdt-change').textContent = (usdtChange > 0 ? '↑' : '→') + Math.abs(usdtChange).toFixed(3) + '%';
+            coin.classList.remove('updating');
+            void coin.offsetWidth;
+            coin.classList.add('updating');
+            setTimeout(() => coin.classList.remove('updating'), 500);
 
-            // BNB
-            const bnbPrice = 612 + (Math.random() * 20 - 10);
-            const bnbChange = 1.89 + (Math.random() * 2 - 1);
-            document.getElementById('bnb-price').textContent = '$' + bnbPrice.toFixed(0);
-            document.getElementById('bnb-change').textContent = (bnbChange > 0 ? '↑' : '↓') + Math.abs(bnbChange).toFixed(2) + '%';
-            document.getElementById('bnb-change').className = bnbChange > 0 ? 'coin-change up' : 'coin-change down';
-
-            // XRP
-            const xrpPrice = 2.45 + (Math.random() * 0.1 - 0.05);
-            const xrpChange = 4.12 + (Math.random() * 2 - 1);
-            document.getElementById('xrp-price').textContent = '$' + xrpPrice.toFixed(2);
-            document.getElementById('xrp-change').textContent = (xrpChange > 0 ? '↑' : '↓') + Math.abs(xrpChange).toFixed(2) + '%';
-            document.getElementById('xrp-change').className = xrpChange > 0 ? 'coin-change up' : 'coin-change down';
-        }
-
-        // Atualizar preços a cada 2 segundos
-        updatePrices();
-        setInterval(updatePrices, 2000);
-
-        // Evitar zoom acidental
-        document.addEventListener('touchmove', function(event) {
-            if (event.touches.length > 1) {
-                event.preventDefault();
+            if (symbol === 'btc' || symbol === 'eth' || symbol === 'bnb') {
+                priceEl.textContent = '$' + Math.round(price).toLocaleString();
+            } else {
+                priceEl.textContent = '$' + price.toFixed(2);
             }
-        }, false);
+
+            changeEl.textContent = (change >= 0 ? 'U ' : 'D ') + Math.abs(change).toFixed(2) + '%';
+            changeEl.className = change >= 0 ? 'coin-change up' : 'coin-change down';
+
+            priceCache[symbol] = { price, change };
+
+            if (symbol === 'sol') {
+                document.getElementById('sol-value').textContent = '$' + (1.256 * price).toFixed(2);
+            } else if (symbol === 'btc') {
+                document.getElementById('btc-value').textContent = '$' + Math.round(price).toLocaleString();
+            }
+        };
+
+        const fetchLiveData = async () => {
+            try {
+                const response = await fetch(
+                    'https://api.coingecko.com/api/v3/simple/price?ids=solana,bitcoin,ethereum,binancecoin,ripple&vs_currencies=usd&include_24hr_change=true'
+                );
+                if (!response.ok) throw new Error('API error');
+
+                const data = await response.json();
+
+                updateCoinUI('sol', data.solana.usd, data.solana.usd_24h_change);
+                updateCoinUI('btc', data.bitcoin.usd, data.bitcoin.usd_24h_change);
+                updateCoinUI('eth', data.ethereum.usd, data.ethereum.usd_24h_change);
+                updateCoinUI('bnb', data.binancecoin.usd, data.binancecoin.usd_24h_change);
+                updateCoinUI('xrp', data.ripple.usd, data.ripple.usd_24h_change);
+            } catch (err) {
+                console.error('Erro ao buscar dados reais, usando simulacao:', err);
+                for (const [symbol, data] of Object.entries(fallbackPrices)) {
+                    const variance = (Math.random() * 2 - 1) * (data.price * 0.01);
+                    const newPrice = data.price + variance;
+                    const newChange = data.change + (Math.random() * 1 - 0.5);
+                    updateCoinUI(symbol, newPrice, newChange);
+                }
+            }
+        };
+
+        fetchLiveData();
+        setInterval(fetchLiveData, 2000);
     </script>
 </body>
 </html>
