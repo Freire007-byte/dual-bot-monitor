@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>DUAL BOT - Monitor Mobile</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        html, body { width: 100%; height: 100%; }
+
+        body {
+            font-family: 'Courier New', monospace;
+            background: #0a0e27;
+            color: #00ff88;
+            padding: 10px;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        .container { max-width: 100%; margin: 0 auto; }
+
+        header {
+            text-align: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #00ff88;
+        }
+
+        h1 {
+            font-size: 24px;
+            margin-bottom: 8px;
+            text-shadow: 0 0 10px #00ff88;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .time { color: #666; font-size: 11px; }
+
+        .grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+
+        .card {
+            background: rgba(10, 14, 39, 0.9);
+            border: 2px solid #00ff88;
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 0 20px rgba(0, 255, 136, 0.1);
+        }
+
+        .card-title {
+            font-size: 16px;
+            margin-bottom: 12px;
+            padding-bottom: 8px;
+            border-bottom: 1px solid #00ff88;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .big {
+            font-size: 28px;
+            text-align: center;
+            padding: 15px;
+            background: rgba(0, 255, 136, 0.1);
+            border: 1px solid #00ff88;
+            border-radius: 5px;
+            margin: 12px 0;
+            word-wrap: break-word;
+        }
+
+        .stat {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+            border-bottom: 1px solid rgba(0, 255, 136, 0.1);
+            font-size: 13px;
+        }
+
+        .stat:last-child { border-bottom: none; }
+
+        .label { color: #666; }
+
+        .value {
+            font-weight: bold;
+            color: #00ff88;
+            text-align: right;
+            word-wrap: break-word;
+            max-width: 50%;
+        }
+
+        .trade-item {
+            background: rgba(0, 255, 136, 0.05);
+            border-left: 3px solid #00ff88;
+            padding: 8px;
+            margin: 5px 0;
+            font-size: 12px;
+        }
+
+        .trade-title {
+            font-weight: bold;
+            margin-bottom: 3px;
+            word-wrap: break-word;
+        }
+
+        .trade-detail {
+            font-size: 11px;
+            color: #888;
+            word-wrap: break-word;
+        }
+
+        .footer {
+            grid-column: 1;
+            text-align: center;
+            padding: 15px;
+            border-top: 1px solid #00ff88;
+            color: #666;
+            font-size: 10px;
+        }
+
+        .btc { color: #00ccff; border-color: #00ccff; }
+        .btc .card-title { color: #00ccff; }
+
+        .status-indicator {
+            display: inline-block;
+            width: 8px;
+            height: 8px;
+            background: #00ff88;
+            border-radius: 50%;
+            margin-right: 5px;
+            animation: blink 1s infinite;
+        }
+
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.3; }
+        }
+
+        /* Mobile responsivo */
+        @media (max-width: 480px) {
+            body { padding: 8px; }
+            h1 { font-size: 20px; }
+            .card { padding: 12px; }
+            .big { font-size: 24px; padding: 12px; }
+            .stat { font-size: 12px; }
+            .card-title { font-size: 14px; padding-bottom: 6px; }
+            .trade-item { padding: 6px; }
+            .trade-detail { font-size: 10px; }
+        }
+
+        @media (min-width: 768px) {
+            .grid { grid-template-columns: 1fr 1fr; }
+            .trades { grid-column: 1 / -1; }
+            h1 { font-size: 32px; }
+            .big { font-size: 32px; }
+            .card-title { font-size: 18px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1><span class="status-indicator"></span>DUAL BOT</h1>
+            <div class="time">
+                <span id="time">00:00:00</span> | 🟢 LIVE
+            </div>
+        </header>
+
+        <div class="grid">
+            <!-- CAÇA PUMP -->
+            <div class="card">
+                <div class="card-title">🎯 CAÇA PUMP</div>
+                <div class="big">+$26.50</div>
+                <div class="stat">
+                    <span class="label">Carteira:</span>
+                    <span class="value">1.256 SOL</span>
+                </div>
+                <div class="stat">
+                    <span class="label">Ganho:</span>
+                    <span class="value">+$26.50</span>
+                </div>
+                <div class="stat">
+                    <span class="label">Trades:</span>
+                    <span class="value">2/2 ✅</span>
+                </div>
+                <div class="stat">
+                    <span class="label">Win Rate:</span>
+                    <span class="value">100%</span>
+                </div>
+                <div class="stat">
+                    <span class="label">Status:</span>
+                    <span class="value">🟢 OPERANDO</span>
+                </div>
+            </div>
+
+            <!-- BTC HUNTER -->
+            <div class="card btc">
+                <div class="card-title">⚡ BTC HUNTER</div>
+                <div class="big" style="color: #00ccff; border-color: #00ccff;">42%</div>
+                <div class="stat">
+                    <span class="label">Saldo:</span>
+                    <span class="value">$14.74</span>
+                </div>
+                <div class="stat">
+                    <span class="label">Confiança:</span>
+                    <span class="value">42→80%</span>
+                </div>
+                <div class="stat">
+                    <span class="label">Modo:</span>
+                    <span class="value">REAL $5</span>
+                </div>
+                <div class="stat">
+                    <span class="label">Whales:</span>
+                    <span class="value">50+</span>
+                </div>
+                <div class="stat">
+                    <span class="label">Status:</span>
+                    <span class="value">🟢 OPERANDO</span>
+                </div>
+            </div>
+
+            <!-- TRADES -->
+            <div class="card trades">
+                <div class="card-title">📈 Trades Executados</div>
+                <div class="trade-item">
+                    <div class="trade-title">1️⃣ MOONFOMO</div>
+                    <div class="trade-detail">+285% | +0.089 SOL ✅</div>
+                </div>
+                <div class="trade-item">
+                    <div class="trade-title">2️⃣ SOLFLARE</div>
+                    <div class="trade-detail">+156% | +0.061 SOL ✅</div>
+                </div>
+            </div>
+
+            <!-- PORTFOLIO -->
+            <div class="card trades">
+                <div class="card-title">💎 Portfolio</div>
+                <div class="stat">
+                    <span class="label">Total:</span>
+                    <span class="value">$157.24</span>
+                </div>
+                <div class="stat">
+                    <span class="label">Ganho:</span>
+                    <span class="value">+$26.50</span>
+                </div>
+                <div class="stat">
+                    <span class="label">Trades:</span>
+                    <span class="value">2</span>
+                </div>
+                <div class="stat">
+                    <span class="label">Win Rate:</span>
+                    <span class="value">100%</span>
+                </div>
+            </div>
+
+            <!-- FOOTER -->
+            <div class="footer">
+                ⚡ 24/7 | Caça Pump + BTC Hunter | Ganhos em tempo real
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function updateTime() {
+            const now = new Date();
+            document.getElementById('time').textContent =
+                String(now.getHours()).padStart(2, '0') + ':' +
+                String(now.getMinutes()).padStart(2, '0') + ':' +
+                String(now.getSeconds()).padStart(2, '0');
+        }
+        updateTime();
+        setInterval(updateTime, 1000);
+
+        // Evitar zoom acidental
+        document.addEventListener('touchmove', function(event) {
+            if (event.touches.length > 1) {
+                event.preventDefault();
+            }
+        }, false);
+    </script>
+</body>
+</html>

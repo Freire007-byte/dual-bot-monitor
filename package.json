@@ -1,0 +1,6 @@
+{
+  "name": "dual-bot-monitor",
+  "version": "1.0.0",
+  "description": "Monitor em tempo real para Caça Pump e BTC Hunter",
+  "main": "index.html"
+}
